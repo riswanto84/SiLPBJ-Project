@@ -19,8 +19,10 @@ from django.urls import path, include
 # SETTING STATIC FILES
 from django.conf.urls.static import static
 from django.conf import settings
+from manajemen_kontrak.views import login_page
 
 urlpatterns = [
+    path('', login_page, name='home'),
     path('admin/', admin.site.urls),
     path('manajemen_kontrak/', include('manajemen_kontrak.urls')),
 ]
