@@ -41,3 +41,10 @@ def home_dashboard(request):
         'total_barang': total_barang,
     }
     return render(request, 'manajemen_kontrak/MenuDashboardMK.html', context)
+
+def EntryBarang(request):
+    form = FormEntryBarang
+    context = {
+        'form': form,
+    }
+    return render(request, 'manajemen_kontrak/FormEntryBarang.html', context)

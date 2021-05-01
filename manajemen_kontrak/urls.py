@@ -10,4 +10,7 @@ urlpatterns = [
     path('login/', views.login_page, name='login_page'),
     path('logout/', views.logoutUser, name='logout'),
     path('home_dashboard', views.home_dashboard, name='home_dashboard'),
+
+    # path untuk use case entry barang
+    path('EntryBarang/', views.EntryBarang, name='EntryBarang'),
 ]
