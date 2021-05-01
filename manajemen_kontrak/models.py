@@ -14,16 +14,24 @@ class UserAdmin(models.Model):
     def __str__(self):
         return self.nama
 
+
 class Barang(models.Model):
+    CATEGORY = (
+        ('unit', 'unit'),
+        ('buah', 'buah'),
+        ('ls', 'ls'),
+    )
+
     nama_barang = models.CharField(max_length=500)
     merk = models.CharField(max_length=200, blank=True, null=True)
     tipe = models.CharField(max_length=200, blank=True, null=True)
-    satuan = models.CharField(max_length=100)
+    satuan = models.CharField(max_length=100, choices=CATEGORY)
     spesifikasi = models.TextField(blank=True, null=True)
     keterangan = models.TextField(blank=True, null=True)
-    
+
     def __str__(self):
         return self.nama_barang
+
 
 class FotoBarang(models.Model):
     deskripsi = models.CharField(max_length=200, blank=True, null=True)
@@ -32,6 +40,7 @@ class FotoBarang(models.Model):
 
     def __str__(self):
         return self.deskripsi
+
 
 class Penyedia(models.Model):
     nama_perusahaan = models.CharField(max_length=300)

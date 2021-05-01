@@ -11,11 +11,15 @@ from django.core.files.storage import FileSystemStorage
 from crispy_forms.helper import FormHelper
 
 # Create your views here.
+
+
 def under_contructions(request):
     raise Http404('Under construction')
 
+
 def master_template(request):
     return render(request, 'manajemen_kontrak/master_template.html')
+
 
 def login_page(request):
     if request.method == 'POST':
@@ -31,9 +35,11 @@ def login_page(request):
     context = {}
     return render(request, 'manajemen_kontrak/login_page.html', context)
 
+
 def logoutUser(request):
     logout(request)
     return redirect('login_page')
+
 
 def home_dashboard(request):
     total_barang = Barang.objects.all().count()
@@ -42,9 +48,20 @@ def home_dashboard(request):
     }
     return render(request, 'manajemen_kontrak/MenuDashboardMK.html', context)
 
+
 def EntryBarang(request):
     form = FormEntryBarang
+    data_barang = Barang.objects.all().order_by('-id')
+
+    if request.method == 'POST':
+        form = FormEntryBarang(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Data berhasil disimpan')
+            return redirect('EntryBarang')
+
     context = {
+        'data_barang': data_barang,
         'form': form,
     }
     return render(request, 'manajemen_kontrak/FormEntryBarang.html', context)
