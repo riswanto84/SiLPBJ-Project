@@ -98,6 +98,9 @@ class Kontrak(models.Model):
     dibuat_oleh = models.ForeignKey(
         UserAdmin, on_delete=models.SET_NULL, null=True, blank=True)
     Penyedia = models.ForeignKey(Penyedia, on_delete=models.CASCADE)
+    dokumen_pengadaan = models.FileField(
+        max_length=255, upload_to='files/', blank=True, null=True)
+    keterangan = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return '%s, %s' % (self.nomor_kontrak, self.judul_kontrak)
@@ -114,3 +117,12 @@ class LampiranKontrak(models.Model):
 
     def __str__(self):
         return '%s %s, %s' % ('Nomor Kontrak:', self.nomor_kontrak.nomor_kontrak, self.barang.nama_barang)
+
+
+class FotoItemPekerjaan(models.Model):
+    item_pekerjaan = models.ForeignKey(
+        LampiranKontrak, on_delete=models.CASCADE)
+    file_foto = models.ImageField(default="profile.png", blank=True, null=True)
+
+    def __str__(self):
+        return '%s, %s' % (self.item_pekerjaan.nomor_kontrak, self.item_pekerjaan.barang.nama_barang)
