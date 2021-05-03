@@ -33,8 +33,7 @@ class Barang(models.Model):
     merk = models.CharField(max_length=200, blank=True, null=True)
     tipe = models.CharField(max_length=200, blank=True, null=True)
     satuan = models.CharField(max_length=100, choices=CATEGORY)
-    spesifikasi = models.TextField(blank=True, null=True)
-    keterangan = models.TextField(blank=True, null=True)
+    spesifikasi_dan_gambar = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return '%s, %s' % (self.merk, self.tipe)

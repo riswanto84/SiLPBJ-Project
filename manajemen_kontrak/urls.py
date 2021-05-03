@@ -13,4 +13,7 @@ urlpatterns = [
 
     # path untuk use case entry barang
     path('EntryBarang/', views.EntryBarang, name='EntryBarang'),
+    path('detail_barang/<str:pk>', views.detail_barang, name='detail_barang'),
+    path('ubah_barang/<str:pk>', views.ubah_barang, name='ubah_barang'),
+    path('hapus_barang/<str:pk>', views.hapus_barang, name='hapus_barang'),
 ]

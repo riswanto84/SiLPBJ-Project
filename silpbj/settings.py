@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'manajemen_kontrak',
     'crispy_forms',
     'ckeditor',
+    'bootstrap_modal_forms',
 ]
 
 MIDDLEWARE = [

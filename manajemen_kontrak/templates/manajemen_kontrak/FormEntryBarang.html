@@ -59,9 +59,9 @@
               <td>{{i.merk}}</td>
               <td>{{i.tipe}}</td>
               <td class="text-center">
-                <a class="ion ion-eye text-primary identifyingClass" href="#modal2" data-toggle="modal" data-target="#modal2" data-id=""> detail | &nbsp;</a>
-                <a class="ion ion-edit text-success" href="#"> ubah | &nbsp;</a>
-                <a class="ion ion-android-delete text-danger" href="#" onclick="return confirm('Lanjutkan menghapus data?');"> hapus</a>
+                <a class="ion ion-eye text-primary identifyingClass" href="{% url 'detail_barang' i.id %}"> detail | &nbsp;</a>
+                <a class="ion ion-edit text-success" href="{% url 'ubah_barang' i.id %}"> ubah | &nbsp;</a>
+                <a class="ion ion-android-delete text-danger" href="{% url 'hapus_barang' i.id %}" onclick="return confirm('Anda yakin akan menghapus data?');"> hapus</a>
               </td>
             </tr>
             {% endfor %}
@@ -115,9 +115,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-default" data-dismiss="modal">Simpan</button>
             </div>
           </div>
         </div>

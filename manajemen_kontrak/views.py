@@ -40,7 +40,7 @@ def logoutUser(request):
     logout(request)
     return redirect('login_page')
 
-
+@login_required(login_url='administrator')
 def home_dashboard(request):
     total_barang = Barang.objects.all().count()
     context = {
@@ -48,7 +48,7 @@ def home_dashboard(request):
     }
     return render(request, 'manajemen_kontrak/MenuDashboardMK.html', context)
 
-
+@login_required(login_url='administrator')
 def EntryBarang(request):
     form = FormEntryBarang
     data_barang = Barang.objects.all().order_by('-id')
@@ -65,3 +65,34 @@ def EntryBarang(request):
         'form': form,
     }
     return render(request, 'manajemen_kontrak/FormEntryBarang.html', context)
+
+@login_required(login_url='administrator')
+def detail_barang(request, pk):
+    detail_barang = Barang.objects.get(id=pk)
+    context = {
+       'detail_barang': detail_barang,
+    }
+    return render(request, 'manajemen_kontrak/detail_barang.html', context)
+
+@login_required(login_url='administrator')
+def ubah_barang(request, pk):
+    barang = Barang.objects.get(id=pk)
+    form = FormEntryBarang(instance=barang)
+
+    if request.method == 'POST':
+        form = FormEntryBarang(request.POST, instance=barang)
+        form.save()
+        messages.info(request, 'Data berhasil diubah')
+        return redirect('EntryBarang')
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'manajemen_kontrak/ubah_barang.html', context)
+
+@login_required(login_url='administrator')
+def hapus_barang(request, pk):
+    barang = Barang.objects.get(id=pk)
+    barang.delete()
+    messages.info(request, 'Data berhasil dihapus')
+    return redirect('EntryBarang')
