@@ -12,3 +12,15 @@ class FormEntryBarang(ModelForm):
         labels = {
             'nama_barang': _('Nama Barang'),
         }
+
+class FormEntryPenyedia(ModelForm):
+    class Meta:
+        model = Penyedia
+        fields = '__all__'
+
+        labels = {
+            'npwp_perusahaan': _('NPWP Perusahaan'),
+        }
+        
+
+        

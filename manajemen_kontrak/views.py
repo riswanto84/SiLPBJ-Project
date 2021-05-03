@@ -43,11 +43,14 @@ def logoutUser(request):
 @login_required(login_url='administrator')
 def home_dashboard(request):
     total_barang = Barang.objects.all().count()
+    total_penyedia = Penyedia.objects.all().count()
     context = {
         'total_barang': total_barang,
+        'total_penyedia': total_penyedia,
     }
     return render(request, 'manajemen_kontrak/MenuDashboardMK.html', context)
 
+# fitur barang
 @login_required(login_url='administrator')
 def EntryBarang(request):
     form = FormEntryBarang
@@ -96,3 +99,52 @@ def hapus_barang(request, pk):
     barang.delete()
     messages.info(request, 'Data berhasil dihapus')
     return redirect('EntryBarang')
+
+# Fitur penyedia
+def EntryPenyedia(request):
+    form = FormEntryPenyedia
+    data_penyedia = Penyedia.objects.all().order_by('-id')
+
+    if request.method == 'POST':
+        form = FormEntryPenyedia(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Data berhasil disimpan')
+            return redirect('EntryPenyedia')
+
+    context = {
+        'data_penyedia': data_penyedia,
+        'form': form,
+    }
+    return render(request, 'manajemen_kontrak/FormEntryPenyedia.html', context)
+
+@login_required(login_url='administrator')
+def detail_penyedia(request, pk):
+    detail_penyedia = Penyedia.objects.get(id=pk)
+    context = {
+       'detail_penyedia': detail_penyedia,
+    }
+    return render(request, 'manajemen_kontrak/detail_penyedia.html', context)
+
+@login_required(login_url='administrator')
+def ubah_penyedia(request, pk):
+    penyedia = Penyedia.objects.get(id=pk)
+    form = FormEntryPenyedia(instance=penyedia)
+
+    if request.method == 'POST':
+        form = FormEntryPenyedia(request.POST, instance=penyedia)
+        form.save()
+        messages.info(request, 'Data berhasil diubah')
+        return redirect('EntryPenyedia')
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'manajemen_kontrak/ubah_penyedia.html', context)
+
+@login_required(login_url='administrator')
+def hapus_penyedia(request, pk):
+    penyedia = Penyedia.objects.get(id=pk)
+    penyedia.delete()
+    messages.info(request, 'Data berhasil dihapus')
+    return redirect('EntryPenyedia')
