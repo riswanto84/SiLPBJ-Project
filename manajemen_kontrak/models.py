@@ -1,6 +1,8 @@
 from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
+import random
+from django.utils.crypto import get_random_string
 
 
 class UserAdmin(models.Model):
@@ -35,7 +37,7 @@ class Barang(models.Model):
     keterangan = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.nama_barang
+        return '%s, %s' % (self.merk, self.tipe)
 
 
 class Penyedia(models.Model):
@@ -116,7 +118,7 @@ class LampiranKontrak(models.Model):
         unique_together = [['barang', ]]
 
     def __str__(self):
-        return '%s %s, %s' % ('Nomor Kontrak:', self.nomor_kontrak.nomor_kontrak, self.barang.nama_barang)
+        return '%s %s, %s %s' % (self.barang.merk, self.barang.tipe,'Nomor Kontrak:', self.nomor_kontrak.nomor_kontrak)
 
 
 class FotoItemPekerjaan(models.Model):
@@ -126,3 +128,26 @@ class FotoItemPekerjaan(models.Model):
 
     def __str__(self):
         return '%s, %s' % (self.item_pekerjaan.nomor_kontrak, self.item_pekerjaan.barang.nama_barang)
+
+class TandaTerimaDistribusi(models.Model):
+    unique_id = get_random_string(length=8)
+    nomor = str(random.randint(1000, 9999)) + "/" + str(unique_id)
+   
+    nomor_tanda_terima = models.CharField(max_length=100, default=nomor)
+    tanggal_terima = models.DateField(default=datetime.now)
+    peruntukan = models.CharField(max_length=250, null=True, blank=True)
+    yang_menyerahkan = models.CharField(max_length=200, null=True, blank=True)
+    yang_menerima = models.CharField(max_length=150, blank=True, null=True)
+    kontrak = models.ForeignKey(Kontrak, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return '%s %s %s, %s' % (self.nomor_tanda_terima, 'no. kontrak :', self.kontrak.nomor_kontrak, self.kontrak.judul_kontrak)
+
+class LampiranTandaTerima(models.Model):
+    nomor_tanda_terima = models.ForeignKey(TandaTerimaDistribusi, on_delete=models.CASCADE)
+    barang = models.ForeignKey(Barang, on_delete=models.CASCADE)
+    kuantitas = models.IntegerField()
+    kondisi = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return '%s %s, %s %s, %s %s, %s %s %s' %  (self.barang.merk, self.barang.tipe, self.kuantitas, self.barang.satuan, "(No. Tanda Terima :", self.nomor_tanda_terima.nomor_tanda_terima, "No. Kontrak :", self.nomor_tanda_terima.kontrak.nomor_kontrak, ")")
