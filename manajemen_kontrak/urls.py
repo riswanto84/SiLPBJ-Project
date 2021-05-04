@@ -22,4 +22,7 @@ urlpatterns = [
     path('detail_penyedia/<str:pk>', views.detail_penyedia, name='detail_penyedia'),
     path('ubah_penyedia/<str:pk>', views.ubah_penyedia, name='ubah_penyedia'),
     path('hapus_penyedia/<str:pk>', views.hapus_penyedia, name='hapus_penyedia'),
+
+    # path untuk use case entry kontrak
+    path('EntryKontrak/', views.EntryKontrak, name='EntryKontrak'),
 ]

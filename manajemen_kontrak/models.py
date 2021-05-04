@@ -1,5 +1,5 @@
 from datetime import datetime
-#import datetime
+from django.db.models import F
 from django.db import models
 from django.contrib.auth.models import User
 import random
@@ -125,6 +125,7 @@ class Kontrak(models.Model):
         max_length=100, choices=JENIS_PEKERJAAN, default='pengadaan barang')
     bentuk_kontrak = models.CharField(
         max_length=100, choices=BENTUK_KONTRAK, default='Surat Perintah Kerja')
+    nilai_kontrak = models.IntegerField(default=0)
     nilai_kontrak_terbilang = models.CharField(
         max_length=200, blank=True, null=True)
     cara_pembayaran = models.CharField(
@@ -133,7 +134,7 @@ class Kontrak(models.Model):
                                         default='Denda 1 ‰ untuk setiap hari keterlambatan dari biaya / harga keseluruhan (sebelum PPn)')
     dibuat_oleh = models.ForeignKey(
         UserAdmin, on_delete=models.SET_NULL, null=True, blank=True)
-    Penyedia = models.ForeignKey(Penyedia, on_delete=models.CASCADE)
+    penyedia = models.ForeignKey(Penyedia, on_delete=models.CASCADE)
     dokumen_pengadaan = models.FileField(
         max_length=255, upload_to='files/', blank=True, null=True)
     keterangan = models.TextField(blank=True, null=True)

@@ -44,9 +44,11 @@ def logoutUser(request):
 def home_dashboard(request):
     total_barang = Barang.objects.all().count()
     total_penyedia = Penyedia.objects.all().count()
+    total_kontrak = Kontrak.objects.all().count()
     context = {
         'total_barang': total_barang,
         'total_penyedia': total_penyedia,
+        'total_kontrak': total_kontrak,
     }
     return render(request, 'manajemen_kontrak/MenuDashboardMK.html', context)
 
@@ -148,3 +150,18 @@ def hapus_penyedia(request, pk):
     penyedia.delete()
     messages.info(request, 'Data berhasil dihapus')
     return redirect('EntryPenyedia')
+
+# Fitur penyedia
+def EntryKontrak(request):
+    #form = FormEntryKontrak
+    if request.method == 'POST':
+        tahun = request.POST.get('tahun_anggaran')
+        kontrak = Kontrak.objects.filter(tahun_anggaran = tahun)
+          
+        context = {
+            'kontrak' : kontrak,
+        }
+        return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)
+
+    context = {}
+    return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)

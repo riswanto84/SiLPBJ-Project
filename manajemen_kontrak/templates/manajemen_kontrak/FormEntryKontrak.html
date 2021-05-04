@@ -1,0 +1,204 @@
+{% extends 'manajemen_kontrak/main_template.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %} 
+
+<!-- Content Section -->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Entry Kontrak</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'home_dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active">Entry Kontrak</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="card">
+        <div class="card-header">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1">+Tambah Kontrak</button>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          {% for message in messages %}
+            <div class="alert alert-default-success alert-dismissible fade show" role="alert">
+              <strong>{{message}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+          {% endfor %}
+          <table id="example1" class="table table-bordered table-striped">
+            <div class="input-group input-group-sm">
+              <form method="POST" action="">
+                {% csrf_token %}
+                <label>Tahun Anggaran &nbsp;</label>
+                <select name="tahun_anggaran" class="form-control select2">
+                  <option selected="selected">Pilih Tahun Anggaran</option>
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                  <option value="2030">2030</option>
+                </select>
+                <span class="input-group-append">
+                  <button type="submit" class="btn btn-info btn-flat">Tampilkan Kontrak</button>
+                </span>
+              </form>
+            </div><br>
+            <thead>
+            <tr>
+              <th class="text-center">No</th>
+              <th class="text-center">Judul Kontrak</th>
+              <th class="text-center">Nama Perusahaan / No. Kontrak</th>
+              <th class="text-center">Nilai Kontrak</th>
+              <th class="text-center">Aksi</th>
+              <th class="text-center">Dokumen Pengadaan</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in kontrak %}
+            <tr>
+              <td class="text-right">{{forloop.counter}}</td>
+              <td>{{i.judul_kontrak}}</td>
+              <td>{{i.penyedia.nama_perusahaan}} <br> No. Kontrak: {{i.nomor_kontrak}}, {{i.tanggal_kontrak}}</td>
+              <td>{{i.nilai_kontrak|intcomma}}</td>
+              <td class="text-center">
+                <a class="ion ion-eye text-primary" href="#"> detail | &nbsp;</a>
+                <a class="ion ion-edit text-success" href="#"> ubah | &nbsp;</a>
+                <a class="ion ion-android-delete text-danger" href="#" onclick="return confirm('Anda yakin akan menghapus data?');"> hapus</a>
+              </td>
+              <td class="text-center">
+                {% if i.dokumen_pengadaan %}
+                  <a href="{{i.dokumen_pengadaan.url}}" target="_blank"><i class="fa fa-download" aria-hidden="true"> unduh</i></a>
+                  {% elif var != i.dokumen_pengadaan %}
+                    <p>-</p>
+                  {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            <tfoot>
+              <tr>
+              <th class="text-center">No</th>
+              <th class="text-center">Judul Kontrak</th>
+              <th class="text-center">Nama Perusahaan</th>
+              <th class="text-center">Nilai Kontrak</th>
+              <th class="text-center">Aksi</th>
+              <th class="text-center">Dokumen Pengadaan</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+      <!-- modal start -->
+      <div class="modal hide fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalBarangLabel">Tambah Penyedia</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h3 class="card-title"></h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <!-- form start -->
+                      <div class="card-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{form|crispy}}
+                            <input type="hidden" name="created_by" value="{{user.id}}">
+                      </div>
+                      <div class="card-footer">
+                          <button type="submit" class="btn btn-primary">Simpan</button>
+                        </form>
+                        <!-- form end -->
+                      </div>   
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="modal hide fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalBarangLabel">Detail Barang</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-2">
+                    <p>Nama Barang</p>
+                    <p>Merk</p>
+                    <p>Tipe</p>
+                    <p>Spesifikasi</p>
+                    <p>Keterangan</p>
+                  </div>
+                  <div class="col-md-1">
+                    <p>:</p>
+                    <p>:</p>
+                    <p>:</p>
+                    <p>:</p>
+                    <p>:</p>
+                  </div>
+                  <div class="col-md-9">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal end -->
+      
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<!-- end of Content Section -->
+
+{% endblock %}
