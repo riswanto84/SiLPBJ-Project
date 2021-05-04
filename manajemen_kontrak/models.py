@@ -1,4 +1,5 @@
 from datetime import datetime
+#import datetime
 from django.db import models
 from django.contrib.auth.models import User
 import random
@@ -35,8 +36,9 @@ class Barang(models.Model):
     satuan = models.CharField(max_length=100, choices=CATEGORY)
     spesifikasi_dan_gambar = models.TextField(blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
-    modified_date = models.DateTimeField(auto_now=True, blank=True, null=True)
-    modified_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, editable=False, blank=True, null=True)
+    created_by = models.IntegerField(max_length=5, blank=True, null=True)
+    modified_by = models.IntegerField(max_length=5, blank=True, null=True)
    
 
     def __str__(self):
@@ -47,13 +49,17 @@ class Penyedia(models.Model):
     nama_perusahaan = models.CharField(max_length=300)
     alamat_perusahaan = models.CharField(max_length=500)
     email = models.CharField(max_length=100, blank=True, null=True)
-    npwp_perusahaan = models.CharField(max_length=15, null=True, blank=True)
+    npwp_perusahaan = models.CharField(max_length=20, null=True, blank=True)
     nomor_rekening = models.CharField(max_length=100, null=True, blank=True)
     bank = models.CharField(max_length=200, null=True, blank=True)
     direktur = models.CharField(max_length=300)
     no_telepon = models.CharField(max_length=50, blank=True, null=True)
     no_hp = models.CharField(max_length=50, blank=True, null=True)
     keterangan = models.TextField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, editable=False, blank=True, null=True)
+    created_by = models.IntegerField(max_length=5, blank=True, null=True)
+    modified_by = models.IntegerField(max_length=5, blank=True, null=True)
 
     def __str__(self):
         return self.nama_perusahaan
@@ -81,11 +87,36 @@ class Kontrak(models.Model):
         ('Sekaligus', 'Sekaligus'),
     )
 
+    STATUS_KONTRAK = (
+        ('Final', 'Final'),
+        ('Draft', 'Draft'),
+    )
+
+    tahun_sekarang = datetime.now()
+    tahun = tahun_sekarang.year
+    bulan = tahun_sekarang.month
+    
+    TAHUN_ANGGARAN = (
+        ('2020', '2020'),
+        ('2021', '2021'),
+        ('2022', '2022'),
+        ('2023', '2023'),
+        ('2024', '2024'),
+        ('2025', '2025'),
+        ('2026', '2026'),
+        ('2027', '2027'),
+        ('2028', '2028'),
+        ('2029', '2029'),
+        ('2030', '2030'),
+    )
+
     nomor_dipa = models.CharField(
-        max_length=500, default='027.01.1.440140/2021')
+        max_length=500, default='027.01.1.440140/' + str(tahun-1))
     tanggal_dipa = models.DateField(default='2020-12-31')
-    nomor_kontrak = models.CharField(max_length=200)
+    tahun_anggaran = models.CharField(max_length=4, default=tahun, choices=TAHUN_ANGGARAN)
+    nomor_kontrak = models.CharField(max_length=200, default='.../1.5/PL.02.01/' + str(bulan) + '/' + str(tahun))
     judul_kontrak = models.CharField(max_length=500)
+    status = models.CharField(max_length=100, choices=STATUS_KONTRAK, default='Final')
     tanggal_kontrak = models.DateField(default=datetime.now)
     tanggal_berakhir_kontrak = models.DateField(default=datetime.now)
     kode_kegiatan_output_akun = models.CharField(

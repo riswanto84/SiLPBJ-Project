@@ -36,6 +36,7 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 {{form|crispy}}
+                <input type="hidden" name="modified_by" value="{{user.id}}">
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>

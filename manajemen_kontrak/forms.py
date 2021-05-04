@@ -13,6 +13,11 @@ class FormEntryBarang(ModelForm):
             'nama_barang': _('Nama Barang'),
         }
 
+        widgets = {
+            'modified_by': forms.HiddenInput(),
+            'created_by': forms.HiddenInput(),
+        }
+
 class FormEntryPenyedia(ModelForm):
     class Meta:
         model = Penyedia
@@ -20,6 +25,11 @@ class FormEntryPenyedia(ModelForm):
 
         labels = {
             'npwp_perusahaan': _('NPWP Perusahaan'),
+        }
+
+        widgets = {
+            'modified_by': forms.HiddenInput(),
+            'created_by': forms.HiddenInput(),
         }
         
 

@@ -105,6 +105,7 @@
                         <form action="" method="POST">
                             {% csrf_token %}
                             {{form|crispy}}
+                            <input type="hidden" name="created_by" value="{{user.id}}">
                       </div>
                       <div class="card-footer">
                           <button type="submit" class="btn btn-primary">Simpan</button>
