@@ -29,11 +29,15 @@ class Barang(models.Model):
         ('tahun', 'tahun'),
     )
 
-    nama_barang = models.CharField(max_length=500)
+    nama_barang = models.CharField(max_length=500, blank=True, null=True)
     merk = models.CharField(max_length=200, blank=True, null=True)
     tipe = models.CharField(max_length=200, blank=True, null=True)
     satuan = models.CharField(max_length=100, choices=CATEGORY)
     spesifikasi_dan_gambar = models.TextField(blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, blank=True, null=True)
+    modified_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+   
 
     def __str__(self):
         return '%s, %s' % (self.merk, self.tipe)
