@@ -34,17 +34,19 @@ class FormEntryPenyedia(ModelForm):
         }
 
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
-
-
 class FormEntryKontrak(ModelForm, forms.Form):
     class Meta:
         model = Kontrak
         fields = '__all__'
 
+        labels = {
+            'nomor_dipa': _('Nomor DIPA'),
+            'tanggal_dipa': _('Tanggal DIPA'),
+            'nomor_kontrak': _('Nomor kontrak'),
+            'kode_kegiatan_output_akun': _('Kode Kegiatan/Output/Akun'),
+        }
+
         widgets = {
             'modified_by': forms.HiddenInput(),
             'created_by': forms.HiddenInput(),
-            'made_on': DateInput(),
         }
