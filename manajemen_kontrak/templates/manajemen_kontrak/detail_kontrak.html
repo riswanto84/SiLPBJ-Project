@@ -1,0 +1,113 @@
+{% extends 'manajemen_kontrak/main_template.html' %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+{% block content %} 
+
+<!-- Content Section -->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Detail Kontrak</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'home_dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'EntryKontrak' %}">Entry Kontrak</a></li>
+              <li class="breadcrumb-item active">Detail Kontrak</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="card">
+        <div class="card-header">
+          <h5></h5>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="container-fluid">
+                <br>
+                <div class="row">
+                  <table class="table">
+                    <tr>
+                        <td>Judul Kontrak</td>
+                        <td>: {{detail_kontrak.judul_kontrak}}</td>
+                    </tr>
+                    <tr>
+                        <td>Nomor & Tanggal Kontrak</td>
+                        <td>: {{detail_kontrak.nomor_kontrak}}, tanggal {{detail_kontrak.tanggal_kontrak|date:'d-m-yy'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Penyedia</td>
+                        <td>: {{detail_kontrak.penyedia.nama_perusahaan}} 
+                            <br> &nbsp; {{detail_kontrak.penyedia.alamat_perusahaan}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nilai Kontrak</td>
+                        <td>: Rp. {{detail_kontrak.nilai_kontrak|intcomma}} ({{detail_kontrak.nilai_kontrak_terbilang}})</td>
+                    </tr>
+                    <tr>
+                        <td>Tahun Anggaran</td>
+                        <td>: {{detail_kontrak.tahun_anggaran}}</td>
+                    </tr>
+                    <tr>
+                        <td>Tanggal berakhir kontrak</td>
+                        <td>: {{detail_kontrak.tanggal_berakhir_kontrak|date:'d M Y'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Cara Pembayaran</td>
+                        <td>: {{detail_kontrak.cara_pembayaran}}</td>
+                    </tr>
+                    <tr>
+                      <td>Ketentuan Sanksi</td>
+                      <td>: {{detail_kontrak.ketentuan_sanksi}}</td>
+                    </tr>
+                    <tr>
+                      <td>Bentuk Kontrak</td>
+                      <td>: {{detail_kontrak.bentuk_kontrak}}</td>
+                    </tr>
+                    <tr>
+                        <td>Nomor DIPA</td>
+                        <td>: {{detail_kontrak.nomor_dipa}}</td>
+                      </tr>
+                    <tr>
+                        <td>Status Kontrak</td>
+                        <td>: {{detail_kontrak.status}}</td>
+                    </tr>
+                    <tr>
+                        <td>File Dokumen Pengadaan</td>
+                        <td>: 
+                            {% if detail_kontrak.dokumen_pengadaan %}
+                                <a class="fa fa-download" target="_blank" aria-hidden="true"  href="{{ detail_kontrak.dokumen_pengadaan.url }}"> unduh berkas</a>
+                                {% elif var != detail_kontrak.dokumen_pengadaan %}
+                                    N/A
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+              </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+  
+      
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<!-- end of Content Section -->
+
+{% endblock %}

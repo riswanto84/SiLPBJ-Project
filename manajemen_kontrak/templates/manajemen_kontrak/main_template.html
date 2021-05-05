@@ -27,6 +27,10 @@
   <link rel="stylesheet" href="{% static 'admin-lte/plugins/daterangepicker/daterangepicker.css' %}">
   <!-- summernote -->
   <link rel="stylesheet" href="{% static 'admin-lte/plugins/summernote/summernote-bs4.min.css' %}">
+
+  <!-- gijgo css\gijgo.min.css -->
+  <link rel="stylesheet" href="{% static 'gijgo/css/gijgo.min.css' %}">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -230,6 +234,9 @@
 <script src="{% static 'admin-lte/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'admin-lte/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
 
+<!-- gijgo.min.js -->
+<script src="{% static 'gijgo/js/gijgo.min.js' %}"></script>
+
 <script>
   $(function () {
     $("#example1").DataTable({
@@ -246,6 +253,25 @@
       "responsive": true,
     });
   });
+</script>
+
+<!-- gijgo elemen for calendar id_tanggal_kontrak, uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome',-->
+<script>
+  $('#id_tanggal_kontrak').datepicker(
+      { 
+        value: '{% now "d/m/Y" %}',
+        uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome',
+        calendarWeeks: true, modal: true, footer: true,
+      }
+    );
+
+    $('#id_tanggal_berakhir_kontrak').datepicker(
+      { 
+        value: '{% now "d/m/Y" %}',
+        uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome',
+        calendarWeeks: true, modal: true, footer: true,
+      }
+    );
 </script>
 
 </body>

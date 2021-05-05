@@ -40,6 +40,7 @@ def logoutUser(request):
     logout(request)
     return redirect('login_page')
 
+
 @login_required(login_url='administrator')
 def home_dashboard(request):
     total_barang = Barang.objects.all().count()
@@ -53,6 +54,8 @@ def home_dashboard(request):
     return render(request, 'manajemen_kontrak/MenuDashboardMK.html', context)
 
 # fitur barang
+
+
 @login_required(login_url='administrator')
 def EntryBarang(request):
     form = FormEntryBarang
@@ -71,13 +74,15 @@ def EntryBarang(request):
     }
     return render(request, 'manajemen_kontrak/FormEntryBarang.html', context)
 
+
 @login_required(login_url='administrator')
 def detail_barang(request, pk):
     detail_barang = Barang.objects.get(id=pk)
     context = {
-       'detail_barang': detail_barang,
+        'detail_barang': detail_barang,
     }
     return render(request, 'manajemen_kontrak/detail_barang.html', context)
+
 
 @login_required(login_url='administrator')
 def ubah_barang(request, pk):
@@ -95,6 +100,7 @@ def ubah_barang(request, pk):
     }
     return render(request, 'manajemen_kontrak/ubah_barang.html', context)
 
+
 @login_required(login_url='administrator')
 def hapus_barang(request, pk):
     barang = Barang.objects.get(id=pk)
@@ -103,6 +109,8 @@ def hapus_barang(request, pk):
     return redirect('EntryBarang')
 
 # Fitur penyedia
+
+
 def EntryPenyedia(request):
     form = FormEntryPenyedia
     data_penyedia = Penyedia.objects.all().order_by('-id')
@@ -120,13 +128,15 @@ def EntryPenyedia(request):
     }
     return render(request, 'manajemen_kontrak/FormEntryPenyedia.html', context)
 
+
 @login_required(login_url='administrator')
 def detail_penyedia(request, pk):
     detail_penyedia = Penyedia.objects.get(id=pk)
     context = {
-       'detail_penyedia': detail_penyedia,
+        'detail_penyedia': detail_penyedia,
     }
     return render(request, 'manajemen_kontrak/detail_penyedia.html', context)
+
 
 @login_required(login_url='administrator')
 def ubah_penyedia(request, pk):
@@ -144,6 +154,7 @@ def ubah_penyedia(request, pk):
     }
     return render(request, 'manajemen_kontrak/ubah_penyedia.html', context)
 
+
 @login_required(login_url='administrator')
 def hapus_penyedia(request, pk):
     penyedia = Penyedia.objects.get(id=pk)
@@ -152,16 +163,44 @@ def hapus_penyedia(request, pk):
     return redirect('EntryPenyedia')
 
 # Fitur penyedia
+
+
+@login_required(login_url='administrator')
 def EntryKontrak(request):
-    #form = FormEntryKontrak
     if request.method == 'POST':
         tahun = request.POST.get('tahun_anggaran')
-        kontrak = Kontrak.objects.filter(tahun_anggaran = tahun)
-          
+        kontrak = Kontrak.objects.filter(tahun_anggaran=tahun)
+
         context = {
-            'kontrak' : kontrak,
+            'kontrak': kontrak,
         }
         return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)
 
     context = {}
     return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)
+
+
+@login_required(login_url='administrator')
+def TambahKontrak(request):
+    form = FormEntryKontrak
+
+    if request.method == 'POST':
+        form = FormEntryKontrak(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Data berhasil disimpan')
+            return redirect('TambahKontrak')
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'manajemen_kontrak/FormTambahKontrak.html', context)
+
+
+@login_required(login_url='administrator')
+def DetailKontrak(request, pk):
+    detail_kontrak = Kontrak.objects.get(id=pk)
+    context = {
+        'detail_kontrak': detail_kontrak,
+    }
+    return render(request, 'manajemen_kontrak/detail_kontrak.html', context)

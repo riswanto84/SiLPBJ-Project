@@ -18,6 +18,7 @@ class FormEntryBarang(ModelForm):
             'created_by': forms.HiddenInput(),
         }
 
+
 class FormEntryPenyedia(ModelForm):
     class Meta:
         model = Penyedia
@@ -31,6 +32,19 @@ class FormEntryPenyedia(ModelForm):
             'modified_by': forms.HiddenInput(),
             'created_by': forms.HiddenInput(),
         }
-        
 
-        
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class FormEntryKontrak(ModelForm, forms.Form):
+    class Meta:
+        model = Kontrak
+        fields = '__all__'
+
+        widgets = {
+            'modified_by': forms.HiddenInput(),
+            'created_by': forms.HiddenInput(),
+            'made_on': DateInput(),
+        }
