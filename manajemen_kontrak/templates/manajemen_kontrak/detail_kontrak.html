@@ -30,7 +30,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="card">
-        <div class="card-header">
+        
           {% for message in messages %}
             <div class="alert alert-default-success alert-dismissible fade show" role="alert">
               <strong>{{message}}</strong>
@@ -39,11 +39,11 @@
                 </button>
             </div>
           {% endfor %}
-        </div>
+        
         <!-- /.card-header -->
         <div class="card-body">
             <div class="container-fluid">
-                <br>
+                
                 <div class="row">
                   <table class="table">
                     <tr>
@@ -112,7 +112,6 @@
               <div class="card card-body">
                 <form action="" method="POST">
                   {% csrf_token %}
-                  {{ formset.management_form }}
                   <table class="table table-bordered table-striped">
                     <thead>
                       <th class="text-center">No</th>
