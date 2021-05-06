@@ -6,8 +6,8 @@
 
 <!-- Content Section -->
 
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -31,7 +31,14 @@
     <section class="content">
       <div class="card">
         <div class="card-header">
-          <h5></h5>
+          {% for message in messages %}
+            <div class="alert alert-default-success alert-dismissible fade show" role="alert">
+              <strong>{{message}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+          {% endfor %}
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -97,6 +104,37 @@
                     </tr>
                 </table>
               </div>
+              <hr>
+              <div class="card-footer">
+                <a href="{% url 'tambah_lampiran_kontrak' detail_kontrak.id %}" class="btn btn-primary float-right">+ Tambah Item</a>
+              </div>
+
+              <div class="card card-body">
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  {{ formset.management_form }}
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <th class="text-center">No</th>
+                      <th class="text-center">Nama Barang</th>
+                      <th class="text-center">Kuantitas</th>
+                      <th class="text-center">Harga Satuan</th>
+                      <th class="text-center">Jumlah</th>
+                    </thead>
+                    <tbody>
+                          <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{field.barang}}</td>
+                            <td>{{field.kuantitas}}</td>
+                            <td>{{field.harga_satuan}}</td>
+                            <td></td>
+                          </tr>
+                    </tbody>
+                  </table>
+                </form>
+          
+              </div>
+              
         </div>
         <!-- /.card-body -->
       </div>

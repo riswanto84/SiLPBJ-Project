@@ -6,7 +6,7 @@ from django.contrib import messages
 from .models import *
 
 from .forms import *
-#from django.forms import modelformset_factory, inlineformset_factory
+from django.forms import modelformset_factory, inlineformset_factory
 from django.core.files.storage import FileSystemStorage
 from crispy_forms.helper import FormHelper
 
@@ -39,6 +39,22 @@ def login_page(request):
 def logoutUser(request):
     logout(request)
     return redirect('login_page')
+
+
+@login_required(login_url='administrator')
+def accountSettings(request):
+    user = request.user.useradmin
+    form = UserAdminForm(instance=user)
+    # print(form)
+
+    if request.method == 'POST':
+        form = UserAdminForm(request.POST, request.FILES, instance=user)
+        if form.is_valid:
+            form.save()
+            messages.info(request, 'Data berhasil diubah')
+
+    context = {'form': form}
+    return render(request, 'manajemen_kontrak/account_settings.html', context)
 
 
 @login_required(login_url='administrator')
@@ -170,26 +186,27 @@ def EntryKontrak(request):
     if request.method == 'POST':
         tahun = request.POST.get('tahun_anggaran')
         kontrak = Kontrak.objects.filter(tahun_anggaran=tahun)
-
+        messages.info(request, 'Menampilkan data kontrak tahun ' + tahun)
         context = {
             'kontrak': kontrak,
         }
         return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)
 
-    context = {}
+    tahun = datetime.now().year
+    kontrak = Kontrak.objects.filter(tahun_anggaran=tahun).order_by('-id')
+    context = {'kontrak': kontrak}
     return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)
 
 
 @login_required(login_url='administrator')
 def TambahKontrak(request):
     form = FormEntryKontrak
-
     if request.method == 'POST':
-        form = FormEntryKontrak(request.POST)
+        form = FormEntryKontrak(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.info(request, 'Data berhasil disimpan')
-            return redirect('TambahKontrak')
+            messages.info(request, 'Data kontrak berhasil disimpan')
+            return redirect('EntryKontrak')
 
     context = {
         'form': form,
@@ -204,3 +221,56 @@ def DetailKontrak(request, pk):
         'detail_kontrak': detail_kontrak,
     }
     return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
+
+
+@login_required(login_url='administrator')
+def ubah_kontrak(request, pk):
+    kontrak = Kontrak.objects.get(id=pk)
+    form = FormEntryKontrak(instance=kontrak)
+
+    if request.method == 'POST':
+        form = FormEntryKontrak(request.POST, request.FILES, instance=kontrak)
+        if form.is_valid:
+            form.save()
+            messages.info(request, 'Data berhasil diubah')
+            return redirect('EntryKontrak')
+
+    context = {'form': form}
+    return render(request, 'manajemen_kontrak/FormTambahKontrak.html', context)
+
+
+@login_required(login_url='administrator')
+def hapus_kontrak(request, pk):
+    kontrak = Kontrak.objects.get(id=pk)
+    kontrak.delete()
+    messages.info(request, 'Kontrak berhasil dihapus')
+    return redirect('EntryKontrak')
+
+
+@login_required(login_url='administrator')
+def tambah_lampiran_kontrak(request, pk):
+    kontrak = Kontrak.objects.get(id=pk)
+    LampiranKontrakFormset = inlineformset_factory(
+        Kontrak, LampiranKontrak, fields=('barang', 'kuantitas', 'harga_satuan'), can_delete=False)
+
+    if request.method == 'POST':
+        formset = LampiranKontrakFormset(
+            request.POST, request.FILES, instance=kontrak)
+        if formset.is_valid():
+            formset.save()
+            messages.info(request, 'Data berhasil disimpan')
+            context = {
+                'detail_kontrak': kontrak,
+            }
+            return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
+            # return HttpResponse('berhasil disimpan')
+
+    formset = LampiranKontrakFormset(instance=kontrak)
+    context = {
+        'formset': formset,
+        'id': pk,
+        'kontrak': kontrak
+    }
+    return render(request, 'manajemen_kontrak/tambah_barang_kontrak.html', context)
+
+    # return HttpResponse('tes')

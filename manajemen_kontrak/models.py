@@ -152,12 +152,20 @@ class Kontrak(models.Model):
     def __str__(self):
         return '%s, %s' % (self.nomor_kontrak, self.judul_kontrak)
 
+# lampiran kontrak
+
 
 class LampiranKontrak(models.Model):
     nomor_kontrak = models.ForeignKey(Kontrak, on_delete=models.CASCADE)
     barang = models.ForeignKey(Barang, on_delete=models.CASCADE)
     kuantitas = models.IntegerField()
     harga_satuan = models.DecimalField(max_digits=15, decimal_places=2)
+    created_date = models.DateTimeField(
+        auto_now_add=True, editable=False, blank=True, null=True)
+    modified_date = models.DateTimeField(
+        auto_now=True, editable=False, blank=True, null=True)
+    created_by = models.IntegerField(max_length=5, blank=True, null=True)
+    modified_by = models.IntegerField(max_length=5, blank=True, null=True)
 
     class Meta:
         unique_together = [['barang', ]]

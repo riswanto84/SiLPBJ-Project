@@ -85,8 +85,8 @@
               <td>{{i.nilai_kontrak|intcomma}}</td>
               <td class="text-center">
                 <a class="ion ion-eye text-primary" href="{% url 'DetailKontrak' i.id %}"> detail | &nbsp;</a>
-                <a class="ion ion-edit text-success" href="#"> ubah | &nbsp;</a>
-                <a class="ion ion-android-delete text-danger" href="#" onclick="return confirm('Anda yakin akan menghapus data?');"> hapus</a>
+                <a class="ion ion-edit text-success" href="{% url 'ubah_kontrak' i.id %}"> ubah | &nbsp;</a>
+                <a class="ion ion-android-delete text-danger" href="{% url 'hapus_kontrak' i.id %}" onclick="return confirm('Anda yakin akan menghapus data?');"> hapus</a>
               </td>
               <td class="text-center">
                 {% if i.dokumen_pengadaan %}

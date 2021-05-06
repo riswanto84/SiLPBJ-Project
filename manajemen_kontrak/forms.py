@@ -4,6 +4,20 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 
+class UserAdminForm(ModelForm):
+    class Meta:
+        model = UserAdmin
+        fields = '__all__'
+        exclude = ['user']
+
+        labels = {
+            'nama': _('Nama Lengkap'),
+            'no_hp': _('Nomor HP'),
+            'email': _('Alamat Email'),
+            'profil_pic': _('Foto Profil'),
+        }
+
+
 class FormEntryBarang(ModelForm):
     class Meta:
         model = Barang
@@ -45,6 +59,17 @@ class FormEntryKontrak(ModelForm, forms.Form):
             'nomor_kontrak': _('Nomor kontrak'),
             'kode_kegiatan_output_akun': _('Kode Kegiatan/Output/Akun'),
         }
+
+        widgets = {
+            'modified_by': forms.HiddenInput(),
+            'created_by': forms.HiddenInput(),
+        }
+
+
+class FormLampiranKontrak(ModelForm):
+    class Meta:
+        model = LampiranKontrak
+        fields = '__all__'
 
         widgets = {
             'modified_by': forms.HiddenInput(),

@@ -11,6 +11,7 @@ urlpatterns = [
     path('login/', views.login_page, name='login_page'),
     path('logout/', views.logoutUser, name='logout'),
     path('home_dashboard', views.home_dashboard, name='home_dashboard'),
+    path('account_setting/', views.accountSettings, name='account_setting'),
 
     # path untuk use case entry barang
     path('EntryBarang/', views.EntryBarang, name='EntryBarang'),
@@ -28,4 +29,8 @@ urlpatterns = [
     path('EntryKontrak/', views.EntryKontrak, name='EntryKontrak'),
     path('TambahKontrak', views.TambahKontrak, name='TambahKontrak'),
     path('DetailKontrak/<str:pk>', views.DetailKontrak, name='DetailKontrak'),
+    path('HapusKontrak/<str:pk>', views.hapus_kontrak, name='hapus_kontrak'),
+    path('ubah_kontrak/<str:pk>', views.ubah_kontrak, name='ubah_kontrak'),
+    path('tambah_lampiran_kontrak/<str:pk>',
+         views.tambah_lampiran_kontrak, name='tambah_lampiran_kontrak')
 ]
