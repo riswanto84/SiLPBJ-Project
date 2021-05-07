@@ -217,8 +217,10 @@ def TambahKontrak(request):
 @login_required(login_url='administrator')
 def DetailKontrak(request, pk):
     detail_kontrak = Kontrak.objects.get(id=pk)
+    item_barang = detail_kontrak.lampirankontrak_set.all()
     context = {
         'detail_kontrak': detail_kontrak,
+        'item_barang': item_barang,
     }
     return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
 
@@ -251,7 +253,8 @@ def hapus_kontrak(request, pk):
 def tambah_lampiran_kontrak(request, pk):
     kontrak = Kontrak.objects.get(id=pk)
     LampiranKontrakFormset = inlineformset_factory(
-        Kontrak, LampiranKontrak, fields=('barang', 'kuantitas', 'harga_satuan'), can_delete=False)
+        Kontrak, LampiranKontrak, fields=('barang', 'kuantitas', 'harga_satuan',), can_delete=False)
+    item_barang = kontrak.lampirankontrak_set.all()
 
     if request.method == 'POST':
         formset = LampiranKontrakFormset(
@@ -261,6 +264,7 @@ def tambah_lampiran_kontrak(request, pk):
             messages.info(request, 'Data berhasil disimpan')
             context = {
                 'detail_kontrak': kontrak,
+                'item_barang': item_barang,
             }
             return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
             # return HttpResponse('berhasil disimpan')

@@ -1,9 +1,10 @@
 from datetime import datetime
-from django.db.models import F
+from django.db.models import F, FloatField, IntegerField
 from django.db import models
 from django.contrib.auth.models import User
 import random
 from django.utils.crypto import get_random_string
+from django.db.models import Sum
 
 
 class UserAdmin(models.Model):
@@ -152,6 +153,19 @@ class Kontrak(models.Model):
     def __str__(self):
         return '%s, %s' % (self.nomor_kontrak, self.judul_kontrak)
 
+    def total_harga(self):
+        # return 'total harga'
+        return self.lampirankontrak_set.aggregate(
+            total_price=Sum(F('kuantitas') * F('harga_satuan'),
+                            output_field=IntegerField())
+        )['total_price'] or Decimal('0')
+
+    def get_ppn(self):
+        return self.total_harga() * 0.01
+
+    def get_jumlahTotal(self):
+        return self.total_harga() - self.get_ppn()
+
 # lampiran kontrak
 
 
@@ -172,6 +186,9 @@ class LampiranKontrak(models.Model):
 
     def __str__(self):
         return '%s %s, %s %s' % (self.barang.merk, self.barang.tipe, 'Nomor Kontrak:', self.nomor_kontrak.nomor_kontrak)
+
+    def get_jumlah_harga(self):
+        return self.kuantitas * self.harga_satuan
 
 
 class FotoItemPekerjaan(models.Model):

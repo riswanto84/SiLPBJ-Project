@@ -117,16 +117,33 @@
                       <th class="text-center">No</th>
                       <th class="text-center">Nama Barang</th>
                       <th class="text-center">Kuantitas</th>
-                      <th class="text-center">Harga Satuan</th>
-                      <th class="text-center">Jumlah</th>
+                      <th class="text-center">Harga Satuan (Rp)</th>
+                      <th class="text-center">Jumlah (Rp)</th>
                     </thead>
                     <tbody>
+                          {% for i in item_barang %}
                           <tr>
-                            <td>{{forloop.counter}}</td>
-                            <td>{{field.barang}}</td>
-                            <td>{{field.kuantitas}}</td>
-                            <td>{{field.harga_satuan}}</td>
-                            <td></td>
+                            <td class="text-right">{{forloop.counter}}</td>
+                            <td>{{i.barang.nama_barang}}</td>
+                            <td class="text-center">{{i.kuantitas}}</td>
+                            <td class="text-right">{{i.harga_satuan|floatformat:0|intcomma}}</td>
+                            <td class="text-right">{{i.get_jumlah_harga|floatformat:0|intcomma}}</td>
+                          </tr>
+                          {% endfor %}
+                          <tr>
+                            <td colspan="4" class="text-right"><b>Total (Rp)</b></td>
+                            <td class="text-right"><b>
+                              {{detail_kontrak.total_harga|floatformat:0|intcomma}}
+                            </b>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4" class="text-right"><b>PPn 10% (Rp)</b></td>
+                            <td class="text-right"><b>{{detail_kontrak.get_ppn|floatformat:0|intcomma}}</b></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4" class="text-right"><b>Jumlah Total (Rp)</b></td>
+                            <td class="text-right"><b>{{detail_kontrak.get_jumlahTotal|floatformat:0|intcomma}}</b></td>
                           </tr>
                     </tbody>
                   </table>

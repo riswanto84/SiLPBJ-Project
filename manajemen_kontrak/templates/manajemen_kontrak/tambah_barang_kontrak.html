@@ -39,11 +39,12 @@
                         {% csrf_token %}
                         {{ formset.management_form }}
                         {% for form in formset %}
+                            <br>
+                            <h5>Item no {{forloop.counter}}</h5>
                             {{ form|crispy }}
-                            <hr>
                         {% endfor %}
                         
-                        <input type="submit" name="Submit">
+                        <input type="submit" name="Simpan" value="Simpan" class="btn btn-primary float-right">
                     </form>
                 </div>
             </div>
