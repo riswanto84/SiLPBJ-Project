@@ -35,16 +35,26 @@
                   <!-- /.card-header -->
                 <div class="card-body">
                 <!-- Content Section -->
-                    <form action="" method="POST">
+                    <form action="" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ formset.management_form }}
                         {% for form in formset %}
-                            <br>
-                            <h5>Item no {{forloop.counter}}</h5>
+          
+                        <div class="card card-primary">
+                          <div class="card-header">
+                            <h5 class="card-title">Item no {{forloop.counter}}</h5>
+                          </div>
+                          <div class="card-body">
                             {{ form|crispy }}
+                          </div>
                         {% endfor %}
-                        
-                        <input type="submit" name="Simpan" value="Simpan" class="btn btn-primary float-right">
+                        </div>
+                        <div class="card-footer">
+                          <div class="float-right">
+                            <button type="submit" name="Simpan" value="Simpan" class="btn btn-primary btn-sm">Simpan</button>
+                            <button onclick="window.history.go(-1); return false;" type="cancel" name="Batal" value="Batal" class="btn btn-info btn-sm">Batal</button>
+                          </div>
+                        </div>
                     </form>
                 </div>
             </div>

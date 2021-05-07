@@ -255,6 +255,7 @@ def tambah_lampiran_kontrak(request, pk):
     LampiranKontrakFormset = inlineformset_factory(
         Kontrak, LampiranKontrak, fields=('barang', 'kuantitas', 'harga_satuan',), can_delete=False)
     item_barang = kontrak.lampirankontrak_set.all()
+    images = request.FILES.getlist('images')
 
     if request.method == 'POST':
         formset = LampiranKontrakFormset(
@@ -266,8 +267,9 @@ def tambah_lampiran_kontrak(request, pk):
                 'detail_kontrak': kontrak,
                 'item_barang': item_barang,
             }
-            return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
+            # return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
             # return HttpResponse('berhasil disimpan')
+            return redirect('EntryKontrak')
 
     formset = LampiranKontrakFormset(instance=kontrak)
     context = {

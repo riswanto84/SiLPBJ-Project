@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 import random
 from django.utils.crypto import get_random_string
 from django.db.models import Sum
+from decimal import Decimal
 
 
 class UserAdmin(models.Model):
@@ -132,9 +133,6 @@ class Kontrak(models.Model):
         max_length=100, choices=JENIS_PEKERJAAN, default='pengadaan barang')
     bentuk_kontrak = models.CharField(
         max_length=100, choices=BENTUK_KONTRAK, default='Surat Perintah Kerja')
-    nilai_kontrak = models.IntegerField(default=0)
-    nilai_kontrak_terbilang = models.CharField(
-        max_length=200, blank=True, null=True)
     cara_pembayaran = models.CharField(
         max_length=200, choices=CARA_PEMBAYARAN, default='Sekaligus')
     ketentuan_sanksi = models.CharField(max_length=500, blank=True, null=True,
@@ -154,17 +152,16 @@ class Kontrak(models.Model):
         return '%s, %s' % (self.nomor_kontrak, self.judul_kontrak)
 
     def total_harga(self):
-        # return 'total harga'
         return self.lampirankontrak_set.aggregate(
             total_price=Sum(F('kuantitas') * F('harga_satuan'),
                             output_field=IntegerField())
-        )['total_price'] or Decimal('0')
+        )['total_price'] or int('0')
 
     def get_ppn(self):
         return self.total_harga() * 0.01
 
     def get_jumlahTotal(self):
-        return self.total_harga() - self.get_ppn()
+        return self.total_harga() + self.get_ppn()
 
 # lampiran kontrak
 

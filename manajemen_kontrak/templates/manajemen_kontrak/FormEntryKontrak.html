@@ -42,7 +42,7 @@
                 </button>
             </div>
           {% endfor %}
-          <table id="example1" class="table table-bordered table-striped">
+          <table id="example1" class="table table-bordered table-striped ">
             <div class="input-group input-group-sm">
               <form method="POST" action="">
                 {% csrf_token %}
@@ -82,7 +82,9 @@
               <td class="text-right">{{forloop.counter}}</td>
               <td>{{i.judul_kontrak}}</td>
               <td>{{i.penyedia.nama_perusahaan}} <br> No. Kontrak: {{i.nomor_kontrak}}, {{i.tanggal_kontrak}}</td>
-              <td>{{i.nilai_kontrak|intcomma}}</td>
+              <td class="text-right" width=20%>
+                    Rp.  {{i.get_jumlahTotal|floatformat:0|intcomma}}
+              </td>
               <td class="text-center">
                 <a class="ion ion-eye text-primary" href="{% url 'DetailKontrak' i.id %}"> detail | &nbsp;</a>
                 <a class="ion ion-edit text-success" href="{% url 'ubah_kontrak' i.id %}"> ubah | &nbsp;</a>
