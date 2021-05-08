@@ -188,7 +188,7 @@ def hapus_penyedia(request, pk):
 
 
 @login_required(login_url='login_page')
-def EntryKontrak(request, tahun=datetime.now().year):
+def EntryKontrak(request, tahun):
     if request.method == 'POST':
         tahun = request.POST.get('tahun_anggaran')
         kontrak = Kontrak.objects.filter(tahun_anggaran=tahun).order_by('-id')
@@ -207,6 +207,7 @@ def EntryKontrak(request, tahun=datetime.now().year):
 @login_required(login_url='login_page')
 def TambahKontrak(request):
     form = FormEntryKontrak
+    tahun = datetime.now().year
     if request.method == 'POST':
         form = FormEntryKontrak(request.POST, request.FILES)
         #tahun = request.POST.get('tahun_anggaran')
@@ -217,6 +218,7 @@ def TambahKontrak(request):
 
     context = {
         'form': form,
+        'tahun': tahun
     }
     return render(request, 'manajemen_kontrak/FormTambahKontrak.html', context)
 
@@ -225,9 +227,11 @@ def TambahKontrak(request):
 def DetailKontrak(request, pk):
     detail_kontrak = Kontrak.objects.get(id=pk)
     item_barang = detail_kontrak.lampirankontrak_set.all()
+    tahun = datetime.now().year
     context = {
         'detail_kontrak': detail_kontrak,
         'item_barang': item_barang,
+        'tahun': tahun
     }
     return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
 
@@ -253,7 +257,7 @@ def hapus_kontrak(request, pk):
     kontrak = Kontrak.objects.get(id=pk)
     kontrak.delete()
     messages.info(request, 'Kontrak berhasil dihapus')
-    return redirect('EntryKontrak')
+    return redirect('EntryKontrak', tahun=datetime.now().year)
 
 
 @login_required(login_url='login_page')

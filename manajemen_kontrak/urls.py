@@ -26,10 +26,11 @@ urlpatterns = [
     path('hapus_penyedia/<str:pk>', views.hapus_penyedia, name='hapus_penyedia'),
 
     # path untuk use case entry kontrak
-    path('EntryKontrak/', views.EntryKontrak, name='EntryKontrak'),
+    path('EntryKontrak/<str:tahun>', views.EntryKontrak, name='EntryKontrak'),
     path('TambahKontrak', views.TambahKontrak, name='TambahKontrak'),
     path('DetailKontrak/<str:pk>', views.DetailKontrak, name='DetailKontrak'),
-    path('HapusKontrak/<str:pk>', views.hapus_kontrak, name='hapus_kontrak'),
+    path('HapusKontrak/<str:pk>',
+         views.hapus_kontrak, name='hapus_kontrak'),
     path('ubah_kontrak/<str:pk>', views.ubah_kontrak, name='ubah_kontrak'),
     path('tambah_lampiran_kontrak/<str:pk>',
          views.tambah_lampiran_kontrak, name='tambah_lampiran_kontrak')
