@@ -255,9 +255,10 @@ def ubah_kontrak(request, pk):
 @login_required(login_url='login_page')
 def hapus_kontrak(request, pk):
     kontrak = Kontrak.objects.get(id=pk)
+    tahun_anggaran = kontrak.tahun_anggaran
     kontrak.delete()
     messages.info(request, 'Kontrak berhasil dihapus')
-    return redirect('EntryKontrak', tahun=datetime.now().year)
+    return redirect('EntryKontrak', tahun=tahun_anggaran)
 
 
 @login_required(login_url='login_page')
