@@ -102,6 +102,19 @@
                             {% endif %}
                         </td>
                     </tr>
+                    <tr>
+                      <td colspan="2">
+                        <u>Keterangan/Catatan:</u>
+                        {{detail_kontrak.keterangan|safe}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <small>*Dibuat oleh: {{detail_kontrak.created_by}}</small>
+                        <br>
+                        <small>*Terakhir diubah oleh: {{nama_penyunting}}</small>
+                      </td>
+                    </tr>
                 </table>
               </div>
               <hr>

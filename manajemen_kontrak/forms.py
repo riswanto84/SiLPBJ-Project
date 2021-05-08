@@ -25,6 +25,7 @@ class FormEntryBarang(ModelForm):
 
         labels = {
             'nama_barang': _('Nama Barang'),
+            'spesifikasi_dan_gambar': _('Spesifikasi'),
         }
 
         widgets = {

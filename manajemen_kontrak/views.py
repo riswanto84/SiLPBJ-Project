@@ -198,9 +198,8 @@ def EntryKontrak(request, tahun):
         }
         return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)
 
-    #tahun = datetime.now().year
     kontrak = Kontrak.objects.filter(tahun_anggaran=tahun).order_by('-id')
-    context = {'kontrak': kontrak}
+    context = {'kontrak': kontrak, 'tahun': tahun}
     return render(request, 'manajemen_kontrak/FormEntryKontrak.html', context)
 
 
@@ -226,12 +225,16 @@ def TambahKontrak(request):
 @login_required(login_url='login_page')
 def DetailKontrak(request, pk):
     detail_kontrak = Kontrak.objects.get(id=pk)
+    get_nama_editor = detail_kontrak.modified_by
+    nama_penyunting = User.objects.get(id=get_nama_editor)
+
     item_barang = detail_kontrak.lampirankontrak_set.all()
     tahun = datetime.now().year
     context = {
         'detail_kontrak': detail_kontrak,
         'item_barang': item_barang,
-        'tahun': tahun
+        'tahun': tahun,
+        'nama_penyunting': nama_penyunting,
     }
     return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
 
@@ -240,16 +243,17 @@ def DetailKontrak(request, pk):
 def ubah_kontrak(request, pk):
     kontrak = Kontrak.objects.get(id=pk)
     form = FormEntryKontrak(instance=kontrak)
+    tahun_anggaran = kontrak.tahun_anggaran
 
     if request.method == 'POST':
         form = FormEntryKontrak(request.POST, request.FILES, instance=kontrak)
         if form.is_valid:
             form.save()
             messages.info(request, 'Data berhasil diubah')
-            return redirect('EntryKontrak')
+            return redirect('EntryKontrak', tahun=tahun_anggaran)
 
-    context = {'form': form}
-    return render(request, 'manajemen_kontrak/FormTambahKontrak.html', context)
+    context = {'form': form, 'tahun': tahun_anggaran}
+    return render(request, 'manajemen_kontrak/FormUbahKontrak.html', context)
 
 
 @login_required(login_url='login_page')
@@ -268,6 +272,7 @@ def tambah_lampiran_kontrak(request, pk):
         Kontrak, LampiranKontrak, fields=('barang', 'kuantitas', 'harga_satuan',), can_delete=False)
     item_barang = kontrak.lampirankontrak_set.all()
     images = request.FILES.getlist('images')
+    tahun_anggaran = kontrak.tahun_anggaran
 
     if request.method == 'POST':
         formset = LampiranKontrakFormset(
@@ -279,16 +284,14 @@ def tambah_lampiran_kontrak(request, pk):
                 'detail_kontrak': kontrak,
                 'item_barang': item_barang,
             }
-            # return render(request, 'manajemen_kontrak/detail_kontrak.html', context)
-            # return HttpResponse('berhasil disimpan')
-            # return redirect('EntryKontrak')
             return redirect('DetailKontrak', pk=pk)
 
     formset = LampiranKontrakFormset(instance=kontrak)
     context = {
         'formset': formset,
         'id': pk,
-        'kontrak': kontrak
+        'kontrak': kontrak,
+        'tahun': tahun_anggaran,
     }
     return render(request, 'manajemen_kontrak/tambah_barang_kontrak.html', context)
 
